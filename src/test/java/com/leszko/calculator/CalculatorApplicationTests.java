@@ -1,10 +1,10 @@
-package com.richinex.calculator;
+package com.leszko.calculator;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class CalculatorApiApplicationTests {
+class CalculatorApplicationTests {
 
 	@Test
 	void contextLoads() {
