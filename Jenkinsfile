@@ -1,5 +1,9 @@
 pipeline {
      agent any
+
+     triggers {
+          pollSCM('* * * * *')
+     }
      stages {
           stage("Compile") {
                steps {
@@ -16,13 +20,12 @@ pipeline {
                     sh "./gradlew jacocoTestReport"
                     publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: true, reportDir: 'build/reports/jacoco/test/html', reportFiles: 'index.html', reportName: 'Code Coverage Report'])
                     sh "./gradlew jacocoTestCoverageVerification"
-
                }
           }
           stage("Static code analysis") {
-                steps {
+               steps {
                     sh "./gradlew checkstyleMain"
-                }
+               }
           }
      }
 }
