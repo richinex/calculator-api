@@ -1,0 +1,19 @@
+name: Trigger Jenkins Build
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  trigger:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Trigger Jenkins
+        run: |
+          curl -X POST "${{ secrets.NGROK_URL }}/job/calculator-api/build" \
+               --user "username:${{ secrets.JENKINS_API_TOKEN }}"
+
+        env:
+          API_TOKEN: ${{ secrets.JENKINS_API_TOKEN }}
