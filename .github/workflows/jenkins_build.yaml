@@ -16,8 +16,9 @@ jobs:
     steps:
       - name: Echo NGROK_URL and Username
         run: |
-          echo "NGROK URL: $NGROK_URL"
-          echo "Jenkins Username: $JENKINS_USERNAME"
+          echo "NGROK URL: ${{ secrets.NGROK_URL }}"
+          echo "Jenkins Username: ${{ secrets.JENKINS_USERNAME }}"
+          echo "Jenkins Token: ${{ secrets.JENKINS_API_TOKEN }}"
 
       - name: Trigger Jenkins
         run: |
