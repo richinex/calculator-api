@@ -1,6 +1,6 @@
 pipeline {
      agent any
-     triggers { cron('* * * * *') }
+     triggers { cron('* 3 * * *') }
      options { timeout(time: 5) }
      parameters {
         booleanParam(name: 'DEBUG_BUILD', defaultValue: true,
