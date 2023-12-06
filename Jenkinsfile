@@ -3,8 +3,9 @@ pipeline {
      triggers { cron('* * * * *') }
      options { timeout(time: 5) }
      parameters {
-     booleanParam(name: 'DEBUG_BUILD', defaultValue: true,
-     description: 'Is it the debug build?')
+        booleanParam(name: 'DEBUG_BUILD', defaultValue: true,
+        description: 'Is it the debug build?')
+     }
      stages {
           stage("Compile") {
                steps {
