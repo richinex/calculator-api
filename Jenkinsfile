@@ -1,5 +1,5 @@
 pipeline {
-     agent jenkins
+     agent {jenkins}
      triggers { cron('* 3 * * *') }
      options { timeout(time: 5) }
      parameters {
