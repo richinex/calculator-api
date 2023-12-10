@@ -68,8 +68,11 @@ spec:
             }
             steps {
                 container('gradle') {
-                    // Checkout code from the repository
-                    git branch: 'main', url: 'https://github.com/richinex/calculator-api.git'
+                    checkout([
+                        $class: 'GitSCM',
+                        branches: [[name: 'refs/heads/main']],
+                        userRemoteConfigs: [[url: 'https://github.com/richinex/calculator-api.git']]
+                    ])
                 }
             }
         }
