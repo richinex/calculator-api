@@ -50,7 +50,7 @@ podTemplate(yaml: '''
         args:
         - 99d
 ''') {
-    node(POD_LABEL) {
+    node any {
         stage('Checkout') {
              steps {
                 container('gradle') {
