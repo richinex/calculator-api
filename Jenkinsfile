@@ -33,7 +33,7 @@
 // }
 
 pipeline {
-    agent none
+    agent any
     triggers { cron('* 3 * * *') }
     options { timeout(time: 5) }
     parameters {
