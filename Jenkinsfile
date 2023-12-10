@@ -1,5 +1,19 @@
 pipeline {
-     agent {jenkins}
+     agent kubernests {
+          label POD_LABEL
+          yaml """
+          apiVersion: v1
+          kind: Pod
+          spec:
+            containers:
+            - name: gradle
+              image: gradle:7.2.0-jdk17
+              command:
+              - sleep
+              args:
+              - 99d
+          """
+     }
      triggers { cron('* 3 * * *') }
      options { timeout(time: 5) }
      parameters {
