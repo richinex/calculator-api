@@ -43,12 +43,6 @@ podTemplate(yaml: '''
         - sleep
         args:
         - 99d
-      - name: gradle
-        image: gradle:7.2.0-jdk17
-        command:
-        - sleep
-        args:
-        - 99d
 ''') {
     node(POD_LABEL) {
         stage('Checkout') {
