@@ -1,5 +1,5 @@
 // pipeline {
-//      agent jenkins
+//      agent any
 //      triggers { cron('* 3 * * *') }
 //      options { timeout(time: 5) }
 //      parameters {
@@ -90,50 +90,34 @@
 // }
 
 
-pipeline {
-    agent {
-        kubernetes {
-            yaml """
-            apiVersion: v1
-            kind: Pod
-            spec:
-              containers:
-              - name: gradle
-                image: gradle:7.2.0-jdk17
-                command:
-                - sleep
-                args:
-                - 99d
-            """
-        }
-    }
-    triggers { cron('* 3 * * *') }
-    options { timeout(time: 5) }
-    parameters {
-        booleanParam(name: 'DEBUG_BUILD', defaultValue: true, description: 'Is it the debug build?')
-    }
-    stages {
-        stage("Compile") {
-            steps {
-                sh "./gradlew compileJava"
+podTemplate(containers: [
+    containerTemplate(
+        name: 'jnlp',
+        image: 'jenkins/inbound-agent:latest'
+        )
+  ]) {
+
+    node(POD_LABEL) {
+        stage('Checkout') {
+             steps {
+                container('gradle') {
+                    checkout([
+                        $class: 'GitSCM',
+                        branches: [[name: 'refs/heads/main']],
+                        userRemoteConfigs: [[url: 'https://github.com/richinex/calculator-api.git']]
+                    ])
+                }
             }
         }
-        stage("Unit test") {
-            steps {
-                sh "./gradlew test"
+        stage('Get a Maven project') {
+            container('jnlp') {
+                stage('Shell Execution') {
+                    sh '''
+                    echo "Hello! I am executing shell"
+                    '''
+                }
             }
         }
-        stage("Code coverage") {
-            steps {
-                sh "./gradlew jacocoTestReport"
-                publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: true, reportDir: 'build/reports/jacoco/test/html', reportFiles: 'index.html', reportName: 'Code Coverage Report'])
-                sh "./gradlew jacocoTestCoverageVerification"
-            }
-        }
-        stage("Static code analysis") {
-            steps {
-                sh "./gradlew checkstyleMain"
-            }
-        }
+
     }
 }
