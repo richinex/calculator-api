@@ -96,8 +96,6 @@ pipeline {
             yaml '''
 apiVersion: v1
 kind: Pod
-metadata:
-  name: andreas-test
 spec:
   containers:
   - name: jnlp
