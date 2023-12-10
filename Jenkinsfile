@@ -93,7 +93,7 @@
 pipeline {
     agent {
         kubernetes {
-            label jenkins
+            label jenkins-slave
             yaml """
             apiVersion: v1
             kind: Pod
