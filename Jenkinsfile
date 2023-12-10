@@ -1,5 +1,5 @@
 pipeline {
-     agent kubernests {
+     agent kubernetes {
           label POD_LABEL
           yaml """
           apiVersion: v1
