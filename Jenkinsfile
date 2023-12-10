@@ -91,7 +91,7 @@
 
 
 podTemplate {
-    node(POD_LABEL) {
+    node(jenkins-slave) {
           stage('Checkout') {
              steps {
                 container('gradle') {
