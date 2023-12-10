@@ -90,34 +90,31 @@
 // }
 
 
-podTemplate(containers: [
-    containerTemplate(
-        name: 'jnlp',
-        image: 'jenkins/inbound-agent:latest'
-        )
-  ]) {
+pipeline {
+    agent {
+        kubernetes {
+            yaml '''
+apiVersion: v1
+kind: Pod
+metadata:
+  name: andreas-test
+spec:
+  containers:
+  - name: jnlp
+    image: jenkins/inbound-agent:4.3-4-jdk11
+    command: ["sleep", "10000"]
+'''
 
-    node(POD_LABEL) {
-        stage('Checkout') {
-             steps {
-                container('gradle') {
-                    checkout([
-                        $class: 'GitSCM',
-                        branches: [[name: 'refs/heads/main']],
-                        userRemoteConfigs: [[url: 'https://github.com/richinex/calculator-api.git']]
-                    ])
+        }
+    }
+
+    stages {
+        stage('Say Hello World') {
+            steps {
+                container("jnlp") {
+                    echo "Hello World!"
                 }
             }
         }
-        stage('Get a Maven project') {
-            container('jnlp') {
-                stage('Shell Execution') {
-                    sh '''
-                    echo "Hello! I am executing shell"
-                    '''
-                }
-            }
-        }
-
     }
 }
