@@ -96,6 +96,17 @@
 // }
 podTemplate {
     node(POD_LABEL) {
+          stage('Checkout') {
+             steps {
+                container('gradle') {
+                    checkout([
+                        $class: 'GitSCM',
+                        branches: [[name: 'refs/heads/main']],
+                        userRemoteConfigs: [[url: 'https://github.com/richinex/calculator-api.git']]
+                    ])
+                }
+            }
+        }
         stage('Run shell') {
             sh 'echo hello world'
         }
